@@ -1,0 +1,188 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>TECH~MA</title>
+  
+    {% load static %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static  'tedmaa/pro/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{% static  'tedmaa/pro/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link href="{% static  'tedmaa/pro/vendor/magnific-popup/magnific-popup.css' %}" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static  'tedmaa/pro/css/freelancer.min.css' %}" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+
+
+{% csrf_token %}
+
+    <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase md-5" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="index.html">TECH~MA</a>
+        <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="events.html">EVENTS</a>
+            </li>
+              <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="analysis.html">ANALYSIS</a>
+            </li>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="about.html">ABOUT</a>
+            </li>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="login.html">ADMIN</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+
+<div class="container mt-5" id="chart_div1" style="width: 900px; height: 500px; margin-top: 500px; position: relative"> 
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"> </script>
+
+ <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawStuff);
+
+      function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+          ['EVENT NAME', 'number of PARTICIPANTS'],
+          {% for  e,p in results %}
+          [ "{{ e}}", {{p}}],
+          {% endfor %}
+        ]);
+
+        var options = {
+          title: 'Chess opening moves',
+          width: 500,
+          legend: { position: 'none' },
+          chart: { title: 'WORKSHOPS PARTICIPANTS',
+                   subtitle: 'NUMBER OF PARTICIPANTS IN THE WORKSHOPS' },
+          bars: 'vertical', // Required for Material Bar Charts.
+          axes: {
+            x: {
+              0: { side: 'top', label: 'PARTICIPANTS'} // Top x-axis.
+            }
+          },
+          bar: { groupWidth: "50%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('chart_div1'));
+        chart.draw(data, options);
+      };
+
+</script>
+
+
+</div>
+
+
+
+<div class="container mt-5" id="chart_div2" style="width: 900px; height: 500px;"> 
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"> </script>
+
+ <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawStuff);
+
+      function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+          ['YEAR', 'NUMBER OF EVENTS'],
+          {% for  k,v in d.items %}
+          [ "{{ k }}", {{ v }}],
+          {% endfor %}
+        ]);
+
+        var options = {
+          title: 'Chess opening moves',
+          width: 500,
+          legend: { position: 'none' },
+          chart: { title: 'EVENTS PER YEAR',
+                   subtitle: 'NUMBER OF EVENTS IN THE YEAR' },
+          bars: 'vertical', // Required for Material Bar Charts.
+          axes: {
+            x: {
+              0: { side: 'top', label: 'events'} // Top x-axis.
+            }
+          },
+          bar: { groupWidth: "5%" }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('chart_div2'));
+        chart.draw(data, options);
+      };
+
+</script>
+
+</div>
+
+<div class="container mt-5" id="chart_div3" style="width: 900px; height: 500px;"> 
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawVisualization);
+
+      function drawVisualization() {
+        // Some raw data (not necessarily accurate)
+        var data = google.visualization.arrayToDataTable([
+          [ 'Month', {% for x in years %} '{{x}}', {% endfor %}  ] ,
+          [ 'Jan',  {% for t,p in epm.items  %}   {{p.1}}, {% endfor %} ] ,
+          [ 'Feb',  {% for t,p in epm.items  %}   {{p.2}}, {% endfor %} ] ,
+          [ 'Mar',  {% for t,p in epm.items  %}   {{p.3}}, {% endfor %} ] ,
+          [ 'Apr',  {% for t,p in epm.items  %}   {{p.4}}, {% endfor %} ] ,
+          [ 'May',  {% for t,p in epm.items  %}   {{p.5}}, {% endfor %} ] ,
+          [ 'Jun',  {% for t,p in epm.items  %}   {{p.6}}, {% endfor %} ] ,
+          [ 'Jul',  {% for t,p in epm.items  %}   {{p.7}}, {% endfor %} ] ,
+          [ 'Aug',  {% for t,p in epm.items  %}   {{p.8}}, {% endfor %} ] ,
+          [ 'Sep',  {% for t,p in epm.items  %}   {{p.9}}, {% endfor %} ] ,
+          [ 'Oct',  {% for t,p in epm.items  %}   {{p.10}}, {% endfor %} ] ,
+          [ 'Nov',  {% for t,p in epm.items  %}   {{p.11}}, {% endfor %} ] ,
+          [ 'Dec',  {% for t,p in epm.items  %}   {{p.12}}, {% endfor %} ] 
+         ]);
+
+        var options = {
+          title : 'Monthly Wise Events For Years ',
+          vAxis: {title: 'Number Of Events'},
+          hAxis: {title: 'Months'},
+          seriesType: 'bars',
+          series: {5: {type: 'line'}}
+        };
+
+        var chart = new google.visualization.ComboChart(document.getElementById('chart_div3'));
+        chart.draw(data, options);
+      }
+    </script>
+
+</div>
+
+
+</body>
+
+</html>
