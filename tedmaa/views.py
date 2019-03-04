@@ -214,8 +214,10 @@ def event_wise(request):
                 l[-1].append(x[i]) 
            l[-1].append(x[-1])
            print(x[-1]) 
-
-
+        
+        print(l)
+        for i in range(len(l)):
+             l[i][0]=i+1
 
         context= {'results':l}
         return render(request,'tedmaa/pro/event-wise.html',context)
@@ -269,6 +271,9 @@ def month_wise(request):
            for i in range(1,7):
                 l[-1].append(x[i]) 
 
+        print(l)
+        for i in range(len(l)):
+             l[i][0]=i+1
 
         context= {'results':l}
         return render(request,'tedmaa/pro/event-wise.html',context)
